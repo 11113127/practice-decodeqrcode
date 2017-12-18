@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>decodeQRcode</title>
+        <script src="src/grid.js"></script>
+        <script src="src/version.js"></script>
+        <script src="src/detector.js"></script>
+        <script src="src/formatinf.js"></script>
+        <script src="src/errorlevel.js"></script>
+        <script src="src/bitmat.js"></script>
+        <script src="src/datablock.js"></script>
+        <script src="src/bmparser.js"></script>
+        <script src="src/datamask.js"></script>
+        <script src="src/rsdecoder.js"></script>
+        <script src="src/gf256poly.js"></script>
+        <script src="src/gf256.js"></script>
+        <script src="src/decoder.js"></script>
+        <script src="src/qrcode.js"></script>
+        <script src="src/findpat.js"></script>
+        <script src="src/alignpat.js"></script>
+        <script src="src/databr.js"></script>
+        <!-- https://github.com/LazarSoft/jsqrcode -->
+    </head>
+
+    <body>
+        <p id="base64"></p>
+        <img id="qrimg" height="150">
+        <input type="file" id="upload" value="上傳">
+        <input type="button" id="action" value="讀取">
+
+        <script>
+            document.querySelector("#upload").onchange = function () {
+                if (this.files && this.files[0]) {
+                    var fr = new FileReader();
+                    fr.onload = function (e) {
+                        document.getElementById("qrimg").src = e.target.result;
+                        document.getElementById("base64").innerHTML = e.target.result;
+                        imageURI = e.target.result;
+                    }
+
+                    fr.readAsDataURL(this.files[0]);
+
+                    function decodeImagefromBase64(data, callback) {
+                        qrcode.callback = callback;
+                        qrcode.decode(data)
+                    }
+
+                    document.querySelector("#action").onclick = function () {
+                        decodeImagefromBase64(imageURI, function (decodedInformation) {
+                            alert(decodedInformation);
+                        });
+                    };
+                }
+            };
+        </script>
+    </body>
+</html>
